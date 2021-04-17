@@ -7,7 +7,8 @@ clockIN = function ( options ) {
 
 	this.Options = {
 		order: 'up',
-		audio: 'assets/audio/up-60.mp3'
+		audio: {},
+		muted: false
 	};
 
 	// Overwriting default values
@@ -22,10 +23,11 @@ clockIN = function ( options ) {
 	var seconds = 0;
 	var minutes = 0;
 	var hours = 0;
-	var audio = new Audio( this.Options.audio );
+	var audio;
 
 	_createUI();
 	_bindEvents();
+
 
 	function _createUI( ele ) {
 
@@ -58,7 +60,6 @@ clockIN = function ( options ) {
 	    ele.querySelector('.clockin-btn-start').addEventListener('click', function( e ) {
             
             _startTimer();
-            audio.play();
             ele.querySelector('.clockin-btn-start').style.display = 'none';
             ele.querySelector('.clockin-btn-pause').style.display = 'table-cell';
 
@@ -67,15 +68,16 @@ clockIN = function ( options ) {
 	    ele.querySelector('.clockin-btn-pause').addEventListener('click', function( e ) {
             
             clearInterval( interval );
-            audio.pause();
+            
+            if ( ! _this.Options.muted ) audio.pause();
+    
             ele.querySelector('.clockin-btn-pause').style.display = 'none';
             ele.querySelector('.clockin-btn-start').style.display = 'table-cell';
 
         });
 
 	    ele.querySelector('.clockin-btn-reset').addEventListener('click', function( e ) {
-            
-			audio.currentTime = 0;
+
             seconds = 0;
 			minutes = 0;
 			hours = 0;
@@ -111,12 +113,15 @@ clockIN = function ( options ) {
 		  		}
 		  		
 		  		_this.Options.ele.querySelector('.clockin-min').innerHTML = minTwoDigits( minutes );
-		  		
-		  		audio.currentTime = 0;
 
 		  	}
 		  	
 		  	_this.Options.ele.querySelector('.clockin-sec').innerHTML = minTwoDigits( seconds );
+
+		  	if ( ! _this.Options.muted ) {
+	            audio = new Audio( 'assets/audio/' + seconds + '.mp3' );
+	            audio.play();	
+		  	}
 	
 		}, 1000 );
 	
