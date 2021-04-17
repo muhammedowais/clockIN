@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'clockin';
+    src:  url('../fonts/clockin.eot?ckvjea');
+    src:  url('../fonts/clockin.eot?ckvjea#iefix') format('embedded-opentype'),
+    url('../fonts/clockin.ttf?ckvjea') format('truetype'),
+    url('../fonts/clockin.woff?ckvjea') format('woff'),
+    url('../fonts/clockin.svg?ckvjea#clockin') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="clockin-"], [class*=" clockin-"] {
+    font-family: 'clockin' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.clockin-play:before {
+    content: "\ea1c";
+}
+.clockin-pause:before {
+    content: "\ea1d";
+}
+.clockin-stop:before {
+    content: "\ea1e";
+}
+
+.clockin-reload:before {
+  content: "\e901";
+}
+
+.clockin-timer {
+    font-size: 50px;
+    display: table;
+    margin: auto;
+}
+
+.clockin-timer > span {
+    display: table-cell;
+}
+
+.clockin-actions {
+    display: table;
+    margin: auto;
+}
+
+.clockin-actions > button {
+    border: 0px;
+    padding: 10px;
+    font-size: 22px;
+    color: white;
+    outline: none;
+    cursor: pointer;
+}
+
+.clockin-actions > button:not(.clockin-btn-pause) {
+    display: table-cell;
+    background: #00bcd4;
+}
+
+.clockin-btn-pause {
+    background: #00bcd49e;
+    display: none;
+}
