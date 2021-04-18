@@ -11,7 +11,7 @@
 }
 
 [class^="clockin-"], [class*=" clockin-"] {
-    font-family: 'clockin' !important;
+    font-family: 'clockin';
     speak: never;
     font-style: normal;
     font-weight: normal;
@@ -36,37 +36,59 @@
 }
 
 .clockin-timer {
+    background: #083d4b;
     font-size: 50px;
+    margin: auto;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: calc(100% - 20px);
+    max-width: 420px;
+    min-width: 212px;
+}
+
+.clockin-time-wrapper {
     display: table;
     margin: auto;
 }
 
-.clockin-timer > span {
+.clockin-timer span {
     display: table-cell;
+    font-family: monospace;
+    color: #62909a;
 }
 
 .clockin-actions {
     display: table;
     margin: auto;
+    margin-bottom: 40px;
 }
 
 .clockin-actions > button {
     border: 0px;
-    padding: 10px;
-    font-size: 22px;
-    color: white;
+    padding: 8px 30px;
+    font-size: 25px;
+    color: #b5c8cc;
     outline: none;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 .clockin-actions > button:not(.clockin-btn-pause) {
     display: table-cell;
-    background: #00bcd4;
 }
 
-
+.clockin-btn-start {
+    background: #425258;
+}
 
 .clockin-btn-pause {
-    background: #00bcd49e;
+    background: #2ba098;
     display: none;
+}
+
+.clockin-btn-reset {
+    background: #ca4b17;
+    margin-left: 10px;
 }

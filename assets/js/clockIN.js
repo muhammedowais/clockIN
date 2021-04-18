@@ -1,3 +1,37 @@
+(function(){
+
+	var mimeType = 'data:audio/mpeg;base64,';
+  	const request = new XMLHttpRequest();
+  	request.open("GET", "assets/js/resources.json");
+  	request.responseType = "json";
+  	request.onload = function() {
+	    
+	    if ( request.status == 200 ) {
+
+	    	for (const [key, value] of Object.entries(request.response)) {
+
+		    	var binary_string = window.atob(value);
+			    var len = binary_string.length;
+			    var bytes = new Uint8Array(len);
+			    for (var i = 0; i < len; i++) {
+			        bytes[i] = binary_string.charCodeAt(i);
+			    }
+
+		    	var undecodedAudio = bytes.buffer;
+		    	clockInAudioCtx.decodeAudioData( undecodedAudio, (data) => clockInBuffer[key] = data );
+
+			}
+
+	    }
+
+  	};
+  	request.send();
+
+})();
+
+var clockInAudioCtx = new AudioContext();
+var clockInBuffer = [];
+
 clockIN = function ( options ) {
 
 	if ( typeof options == 'undefined' || typeof options.ele == 'undefined' )
@@ -6,9 +40,10 @@ clockIN = function ( options ) {
 	var _this = this;
 
 	this.Options = {
-		order: 'up',
-		audio: {},
-		muted: false
+		type: 'stopwatch',                           //stopwatch, countdown
+		muted: false,                                //true, false
+		audioSpeed: 1,                               //positive float value
+		startFrom: { h: '00', m: '01', s: '00' }     //object
 	};
 
 	// Overwriting default values
@@ -28,16 +63,17 @@ clockIN = function ( options ) {
 	_createUI();
 	_bindEvents();
 
-
 	function _createUI( ele ) {
 
 		_this.Options.ele.innerHTML = `
 			<div class="clockin-timer">
-	            <span class="clockin-hour">00</span>
-	            <span class="clockin-separator">:</span>
-	            <span class="clockin-min">00</span>
-	            <span class="clockin-separator">:</span>
-	            <span class="clockin-sec">00</span>
+	            <div class="clockin-time-wrapper">
+	            	<span class="clockin-hour">00</span>
+		            <span class="clockin-separator">:</span>
+		            <span class="clockin-min">00</span>
+		            <span class="clockin-separator">:</span>
+		            <span class="clockin-sec">00</span>
+		        </div>
 	        </div>
 	        <div class="clockin-actions">
 	            <button class="clockin-btn-start">
@@ -69,7 +105,7 @@ clockIN = function ( options ) {
             
             clearInterval( interval );
             
-            if ( ! _this.Options.muted ) audio.pause();
+            if ( ! _this.Options.muted && audio != undefined ) audio.stop(0);
     
             ele.querySelector('.clockin-btn-pause').style.display = 'none';
             ele.querySelector('.clockin-btn-start').style.display = 'table-cell';
@@ -81,9 +117,9 @@ clockIN = function ( options ) {
             seconds = 0;
 			minutes = 0;
 			hours = 0;
-			_this.Options.ele.querySelector('.clockin-sec').innerHTML = minTwoDigits( 0 );
-			_this.Options.ele.querySelector('.clockin-min').innerHTML = minTwoDigits( 0 );
-			_this.Options.ele.querySelector('.clockin-hour').innerHTML = minTwoDigits( 0 );
+			_this.Options.ele.querySelector('.clockin-sec').innerHTML = _minTwoDigits( 0 );
+			_this.Options.ele.querySelector('.clockin-min').innerHTML = _minTwoDigits( 0 );
+			_this.Options.ele.querySelector('.clockin-hour').innerHTML = _minTwoDigits( 0 );
 
         });
 	
@@ -108,28 +144,43 @@ clockIN = function ( options ) {
 
 		  			hours++;
 
-		  			_this.Options.ele.querySelector('.clockin-hour').innerHTML = minTwoDigits( hours );
+		  			_this.Options.ele.querySelector('.clockin-hour').innerHTML = _minTwoDigits( hours );
 
 		  		}
 		  		
-		  		_this.Options.ele.querySelector('.clockin-min').innerHTML = minTwoDigits( minutes );
+		  		_this.Options.ele.querySelector('.clockin-min').innerHTML = _minTwoDigits( minutes );
 
 		  	}
 		  	
-		  	_this.Options.ele.querySelector('.clockin-sec').innerHTML = minTwoDigits( seconds );
+		  	_this.Options.ele.querySelector('.clockin-sec').innerHTML = _minTwoDigits( seconds );
 
 		  	if ( ! _this.Options.muted ) {
-	            audio = new Audio( 'assets/audio/' + seconds + '.mp3' );
-	            audio.play();	
+
+	            _setAudioBuffer( seconds );
+			  	audio.playbackRate.value = _this.Options.audioSpeed;
+			  	audio.start();
+
 		  	}
 	
 		}, 1000 );
 	
 	}
 
-	function minTwoDigits( number ) {
+	function _minTwoDigits( number ) {
+
 		return ( number < 10 ? '0' : '' ) + number;
+
 	}
+
+	function _setAudioBuffer( index ) {
+		
+		if ( clockInAudioCtx.state === 'suspended' ) clockInAudioCtx.resume();
+
+	  	audio = clockInAudioCtx.createBufferSource();
+	  	audio.buffer = clockInBuffer[ index ];
+	  	audio.connect( clockInAudioCtx.destination );
+
+	};
 
 	this.start = function() {
 		this.Options.ele.querySelector('.clockin-btn-start').click();
