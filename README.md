@@ -1,2 +1,4 @@
 # clockIN
-Stopwatch and Countdown with voice
+Talking Stopwatch
+
+<a href="https://muhammedowais.github.io/clockIN" target="_blank">DEMO</a>
