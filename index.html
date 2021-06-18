@@ -7,23 +7,23 @@
     <link href="assets/css/style.css?v=1.0" rel="stylesheet">
 </head>
 <body style="background:#002a36;color:#62909a;font-family:monospace;padding: 0px 10px;">
-    <h1 style="text-align:center;font-size:35px;margin-bottom:40px">clockIN Demo</h1>
-    <div style="text-align:center;font-size:25px;font-style:italic;">Timer One</div>
+    <h1 style="text-align:center;font-size:35px;margin-bottom:40px">clockIN</h1>
+    <div style="text-align:center;font-size:25px;font-style:italic;">Talking Stopwath</div>
     <div id="clockIN1"></div>
-    <div style="text-align:center;font-size:25px;margin-top:50px;font-style:italic;">Timer Two</div>
-    <div id="clockIN2"></div>
+    <!-- <div style="text-align:center;font-size:25px;margin-top:50px;font-style:italic;">Timer Two</div>
+    <div id="clockIN2"></div> -->
     <script type="text/javascript" src="assets/js/clockIN.js?v=1.0" ></script>
     <script type="text/javascript">
         var clockINs1 = new clockIN({
             ele: '#clockIN1',
             audioSpeed: 1
         });
-        var clockINs2 = new clockIN({
-            ele: '#clockIN2',
-            type: 'countdown',
-            startFrom: { h: '00', m: '03', s: '55' }
-            //muted: true
-        });
+        // var clockINs2 = new clockIN({
+        //     ele: '#clockIN2',
+        //     type: 'countdown',
+        //     startFrom: { h: '00', m: '03', s: '55' }
+        //     //muted: true
+        // });
     </script>
 </body>
 </html>
